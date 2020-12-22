@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="org.service.demo">
 
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
-   <!-- <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"
         android:maxSdkVersion="29"/>
     <uses-permission android:name="android.permission.READ_CALL_LOG"/>
@@ -18,15 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ServiceDemo">
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!--<service android:name=".callrestrict.CallScreeningServiceImpl" />-->
 
         <receiver android:name=".callrestrict.CallScreenReceiver"
             android:enabled="true">
@@ -35,16 +30,6 @@
             </intent-filter>
         </receiver>
 
-        <!--<service
-            android:name=".callrestrict.CallScreeningServiceImpl"
-            android:permission="android.permission.BIND_INCALL_SERVICE">
-            <meta-data
-                android:name="android.telecom.IN_CALL_SERVICE_UI"
-                android:value="true" />
-            <intent-filter>
-                <action android:name="android.telecom.InCallService" />
-            </intent-filter>
-        </service>-->
         <service
             android:name=".callrestrict.CallScreeningServiceImpl"
             android:label="@string/connection_service"
@@ -61,10 +46,6 @@
                 android:name="android.telecom.InCallService"
                 android:value="true">
             </meta-data>
-            <!--<meta-data
-                android:name="android.telecom.IN_CALL_SERVICE_RINGING"
-                android:value="true">
-            </meta-data>-->
             <intent-filter>
                 <action
                     android:name="android.telecom.InCallService">
@@ -72,23 +53,6 @@
             </intent-filter>
         </service>
 
-        <!--developer.android.com
-        <service android:name="com.example.package.MyConnectionService"
-            android:label="@string/some_label_for_my_connection_service"
-            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
-            <intent-filter>
-                <action android:name="android.telecom.ConnectionService" />
-            </intent-filter>
-        </service>
-        developer.android.com-->
-
-        <!--<service
-            android:name=".callrestrict.CallScreeningServiceImpl"
-            android:permission="android.permission.BIND_SCREENING_SERVICE">
-            <intent-filter>
-                <action android:name="android.telecom.CallScreeningService"/>
-            </intent-filter>
-        </service>-->
     </application>
 
 </manifest>

@@ -26,13 +26,13 @@ class IncomingCallService : InCallService() {
     }
 
     override fun onCallAdded(call: Call?) {
-        Log.i("TAG", "Callback onCallAdded: $call")
+        Log.d("TAG", "Callback onCallAdded: $call")
         call?.registerCallback(callBack)
         super.onCallAdded(call)
     }
 
     override fun onCallRemoved(call: Call?) {
-        Log.i("TAG", "Callback onCallRemoved: $call")
+        Log.d("TAG", "Callback onCallRemoved: $call")
         call?.unregisterCallback(callBack)
         super.onCallRemoved(call)
     }
@@ -51,7 +51,7 @@ class IncomingCallService : InCallService() {
 
     private val callBack = object: Call.Callback() {
         override fun onStateChanged(call: Call?, state: Int) {
-            Log.i("TAG", "Callback onStateChanged: $call, state: $state")
+            Log.d("TAG", "Callback onStateChanged: $call, state: $state")
             super.onStateChanged(call, state)
         }
     }
