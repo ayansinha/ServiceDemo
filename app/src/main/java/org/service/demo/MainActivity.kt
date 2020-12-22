@@ -1,17 +1,11 @@
 package org.service.demo
 
 import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import org.service.demo.util.toastLong
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,8 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        //setContentView(R.layout.activity_main)
         /*val tv: TextView = findViewById(R.id.textView)
         val buttonSchedule: Button = findViewById(R.id.buttonSchedule)
         val buttonCancel: Button = findViewById(R.id.buttonCancel)*/

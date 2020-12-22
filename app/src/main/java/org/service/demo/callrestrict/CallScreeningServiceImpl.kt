@@ -1,10 +1,15 @@
 package org.service.demo.callrestrict
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
+import android.os.Build
+import android.os.Bundle
+import android.os.IBinder
 import android.telecom.*
 import android.util.Log
 import android.view.Gravity
@@ -13,40 +18,29 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import org.service.demo.R
+import org.service.demo.callrestrict.Number.incoming
+import org.service.demo.util.showSnackBar
 import org.service.demo.util.toastLong
 
-class CallScreeningServiceImpl: ConnectionService() {
+class CallScreeningServiceImpl : ConnectionService() {
 
-    private lateinit var view: View
+    private lateinit var mView: View
     private lateinit var conn: Connection
     private lateinit var phoneNumber: String
-
-    /*@RequiresApi(Build.VERSION_CODES.Q)
-    override fun onScreenCall(callDetails: Call.Details) {
-        Log.d("TAG", "CallScreeningService: ")
-        if ( callDetails.callDirection == Call.Details.DIRECTION_INCOMING) {
-            val number = telNumber
-        }
-    }
-
-    private fun releaseCall(details: Call.Details) {
-        respondToCall(details, CallResponse.Builder().build())
-    }*/
-
+    private lateinit var context: Context
 
     override fun onCreateIncomingConnection(
         connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest?
     ): Connection {
-        Log.e("TAG", "CONNECTION onCreateIncomingConnection:" )
-
-        /*conn.setCallerDisplayName("AYAN SINHA", PRESENTATION_ALLOWED)
-        return conn*/
+        Log.e("TAG", "CONNECTION onCreateIncomingConnection:")
         return super.onCreateIncomingConnection(connectionManagerPhoneAccount, request)
     }
 
     override fun onCreate() {
         Log.e("TAG", "onCreate: ")
+        this.context = this
+        mView = View(this)
         super.onCreate()
     }
 
@@ -55,48 +49,42 @@ class CallScreeningServiceImpl: ConnectionService() {
         super.onStart(intent, startId)
     }
 
-    @SuppressLint("RtlHardcoded", "SetTextI18n", "InflateParams")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        phoneNumber = intent?.getStringExtra(incoming) ?: "number"
+        toastLong("NHS-COVID-19-CALLER ID: $phoneNumber")
+        //mView.showSnackBar("NHS-COVID-19-CALLER ID: $phoneNumber")
+        Log.e("TAG", "onStartCommand:$phoneNumber")
 
-        /*CallConnection(this, intent).onShowIncomingCallUi()
-        val user = conn.callerDisplayName*/
-        phoneNumber = intent?.getStringExtra("incoming") ?: "number"
-        toastLong("incoming... $phoneNumber" )
-        Log.e("TAG", "onStartCommand:$phoneNumber" )
-
-        //val textView = TextView(this)
-        //val layout = findViewById<ConstraintLayout>(R.id.root)
-        //setting height and width
-        //textView.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        //layout?.addView(textView)
-        val layoutParam = WindowManager.LayoutParams(
+        /*val layoutParam = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            0,
+            WindowManager.LayoutParams.WRAP_CONTENT
+            *//*0,
             0,
             //WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
             0,
-            PixelFormat.TRANSLUCENT
+            PixelFormat.TRANSLUCENT*//*
         )
 
+        var mView = View(context)
         layoutParam.gravity = Gravity.CENTER
         //return super.onStartCommand(intent, flags, startId)
-        val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        view = inflater.inflate(R.layout.incoming_view, null)
-        val textView: TextView = view.findViewById(R.id.textViewIncoming)
+        val inflater: LayoutInflater =
+            getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        mView = inflater.inflate(R.layout.incoming_view, null)
+        val textView: TextView = mView.findViewById(R.id.textViewIncoming)
         val phoneNumber = intent?.getStringExtra("incoming")
-        textView.apply {
+        textView.text = "Incoming call \n $phoneNumber"
+        textView.setBackgroundColor(Color.YELLOW)
+        *//*textView.apply {
             text = "Calling ayan sinha"
             setBackgroundColor(Color.YELLOW)
-        }
+        }*/
         return START_STICKY
     }
 
     override fun onDestroy() {
         Log.e("TAG", "onDestroy: ")
-        val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        //windowManager.removeView(view)
         super.onDestroy()
     }
 
@@ -107,44 +95,46 @@ class CallScreeningServiceImpl: ConnectionService() {
 
 }
 
-class CallConnection(private val context: Context, private val intent: Intent?): Connection() {
+class CallConnection(private val context: Context, private val intent: Intent?) : Connection() {
     override fun onCallAudioStateChanged(state: CallAudioState?) {
-        Log.e("TAG", "CONNECTION onCallAudioStateChanged: ", )
+        Log.e("TAG", "CONNECTION onCallAudioStateChanged: ")
     }
 
+    @SuppressLint("InflateParams")
     override fun onShowIncomingCallUi() {
-        Log.e("TAG", "CONNECTION onShowIncomingCallUi:.... " )
+        Log.e("TAG", "CONNECTION onShowIncomingCallUi:.... ")
         //Toast.makeText(context, "cvcvcvcvcc", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDisconnect() {
-        Log.e("TAG", "CONNECTION onDisconnect: ", )
+        Log.e("TAG", "CONNECTION onDisconnect: ")
     }
 
     override fun onSeparate() {
-        Log.e("TAG", "CONNECTION onSeparate: ", )
+        Log.e("TAG", "CONNECTION onSeparate: ")
     }
 
     override fun onAbort() {
-        Log.e("TAG", "CONNECTION onAbort: ", )
+        Log.e("TAG", "CONNECTION onAbort: ")
     }
 
     override fun onHold() {
-        Log.e("TAG", "CONNECTION onHold: ", )
+        Log.e("TAG", "CONNECTION onHold: ")
     }
 
     override fun onUnhold() {
-        Log.e("TAG", "CONNECTION onUnhold: ", )
+        Log.e("TAG", "CONNECTION onUnhold: ")
     }
+
     override fun onAnswer() {
-        Log.e("TAG", "CONNECTION onReject: ", )
+        Log.e("TAG", "CONNECTION onAnswer: ")
     }
 
     override fun onReject() {
-        Log.e("TAG", "CONNECTION onReject: ", )
+        Log.e("TAG", "CONNECTION onReject: ")
     }
 
     override fun onSilence() {
-        Log.e("TAG", "CONNECTION onSilence: ", )
+        Log.e("TAG", "CONNECTION onSilence: ")
     }
 }
