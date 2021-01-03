@@ -1,6 +1,5 @@
 package org.service.demo.callrestrict
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.telecom.*
@@ -34,9 +33,12 @@ class CallScreeningServiceImpl : ConnectionService() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("TAG", "onStartCommand: ")
         phoneNumber = intent?.getStringExtra(incoming) ?: "number"
         toastLong("NHS-COVID-19-CALLER ID: $phoneNumber")
-        return START_STICKY
+
+        //return START_STICKY
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
