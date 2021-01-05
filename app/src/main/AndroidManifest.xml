@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="org.service.demo">
 
-    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
-    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--
+ Required only when requesting background location access on
+      Android 10 (API level 29) and higher.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +23,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ServiceDemo">
-        <activity android:name=".MainActivity">
+        <receiver android:name=".NHSLocationWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/n_h_s_location_widget_info" />
+        </receiver>
+
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,32 +41,37 @@
             </intent-filter>
         </activity>
 
-        <!--<service android:name=".callrestrict.CallScreeningServiceImpl" />-->
-
-        <receiver android:name=".callrestrict.CallScreenReceiver"
+        <receiver
+            android:name=".callrestrict.CallScreenReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE"/>
+                <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
 
         <service
             android:name=".callrestrict.CallScreeningServiceImpl"
-            android:permission="android.permission.BIND_INCALL_SERVICE">
-            <meta-data
-                android:name="android.telecom.IN_CALL_SERVICE_UI"
-                android:value="false" />
+            android:enabled="true"
+            android:label="@string/connection_service"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
             <intent-filter>
-                <action android:name="android.telecom.InCallService" />
+                <action android:name="android.telecom.ConnectionService" />
             </intent-filter>
         </service>
-        <!--<service
-            android:name=".callrestrict.CallScreeningServiceImpl"
-            android:permission="android.permission.BIND_SCREENING_SERVICE">
+        <service
+            android:name=".callrestrict.IncomingCallService"
+            android:permission="android.permission.BIND_INCALL_SERVICE">
+            <meta-data
+                android:name="android.telecom.InCallService"
+                android:value="true">
+            </meta-data>
             <intent-filter>
-                <action android:name="android.telecom.CallScreeningService"/>
+                <action
+                    android:name="android.telecom.InCallService">
+                </action>
             </intent-filter>
-        </service>-->
+        </service>
+        <service android:name=".location.FusedLocationService" />
     </application>
 
 </manifest>

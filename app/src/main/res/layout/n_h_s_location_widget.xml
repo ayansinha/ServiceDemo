@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin"
+    android:background="@drawable/corner"
+    android:theme="@style/ThemeOverlay.ServiceDemo.AppWidgetContainer">
+
+    <TextView
+        android:id="@+id/appwidget_text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:fontFamily="@font/roboto_light"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="34sp"/>
+
+    <TextView
+        android:id="@+id/appwidget_text_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:fontFamily="@font/roboto_light"
+        android:layout_alignStart="@id/appwidget_text_title"
+        android:layout_below="@id/appwidget_text_title" />
+
+    <ImageView
+        android:id="@+id/appwidget_image_location"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/placeholder"/>
+
+
+    <!--<LinearLayout
+        android:id="@+id/linearParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/appwidget_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="CO4"
+                android:layout_marginTop="8dp"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/appwidget_text_desc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:textColor=" #e74c3c "
+                android:text="Tier Two in (High Alert)"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="24dp"
+            android:gravity="center|end"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/appwidget_image_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/placeholder"/>
+        </LinearLayout>
+
+    </LinearLayout>-->
+
+    <!--<TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:background="?attr/appWidgetBackgroundColor"
+        android:contentDescription="@string/appwidget_text"
+        android:text="@string/appwidget_text"
+        android:textColor="?attr/appWidgetTextColor"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />-->
+</RelativeLayout>
